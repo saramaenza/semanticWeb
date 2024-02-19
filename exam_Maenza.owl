@@ -1,0 +1,756 @@
+@prefix : <http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw> .
+
+<http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw> rdf:type owl:Ontology .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#belongsTo
+:belongsTo rdf:type owl:ObjectProperty ;
+           rdfs:subPropertyOf :isLocatedIn ;
+           owl:inverseOf :containsMountainSystem ;
+           rdf:type owl:FunctionalProperty ;
+           rdfs:domain :MountainSystem ;
+           rdfs:range :ParkOrganization ;
+           rdfs:comment "An European Mountain System is included in a Natural Park Organization."@en ;
+           rdfs:label "belongsTo"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#containsMountainSystem
+:containsMountainSystem rdf:type owl:ObjectProperty ;
+                        rdfs:subPropertyOf :hasMountainSystem ;
+                        rdf:type owl:InverseFunctionalProperty ;
+                        rdfs:domain :ParkOrganization ;
+                        rdfs:range :MountainSystem ;
+                        rdfs:comment "A Natural Park Organization contains European Mountain System."@en ;
+                        rdfs:label "containsMountainSystem"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#develops
+:develops rdf:type owl:ObjectProperty ;
+          owl:inverseOf :isDevelopedIn ;
+          rdfs:domain :Municipality ;
+          rdfs:range :ValueChain ;
+          rdfs:comment "A Municipality develops a Value Chain."@en ;
+          rdfs:label "develops"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasAgreementWith
+:hasAgreementWith rdf:type owl:ObjectProperty ;
+                  owl:inverseOf :hasAgreementWith ;
+                  rdf:type owl:FunctionalProperty ,
+                           owl:SymmetricProperty ;
+                  rdfs:domain [ rdf:type owl:Class ;
+                                owl:unionOf ( :Municipality
+                                              :ParkOrganization
+                                            )
+                              ] ;
+                  rdfs:range [ rdf:type owl:Class ;
+                               owl:unionOf ( :Municipality
+                                             :ParkOrganization
+                                           )
+                             ] ;
+                  rdfs:comment "A Natural Park Organization or a Municipality has agreement with a Municipality or a Natural Park Organization."@en ;
+                  rdfs:label "hasAgreementWith"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasMountainSystem
+:hasMountainSystem rdf:type owl:ObjectProperty ;
+                   owl:inverseOf :isLocatedIn ;
+                   rdfs:domain [ rdf:type owl:Class ;
+                                 owl:unionOf ( :Country
+                                               :ParkOrganization
+                                             )
+                               ] ;
+                   rdfs:range :MountainSystem ;
+                   rdfs:comment "A Country or a Natural Park has Mountain System."@en ;
+                   rdfs:label "hasMountainSystem"@en .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasProducer
+:hasProducer rdf:type owl:ObjectProperty ;
+             owl:inverseOf :produce ;
+             rdfs:domain :Product ;
+             rdfs:range :Producer ;
+             rdfs:comment "A Product is produced by a Producer."@en ;
+             rdfs:label "hasProducer"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasStakeholder
+:hasStakeholder rdf:type owl:ObjectProperty ;
+                owl:inverseOf :isStakeholderOf ;
+                rdfs:domain :ValueChain ;
+                rdfs:range :Stakeholder ;
+                rdfs:comment "A Value Chain has Stakeholder."@en ;
+                rdfs:label "hasStakeholder"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasWorker
+:hasWorker rdf:type owl:ObjectProperty ;
+           owl:inverseOf :worksIn ;
+           rdf:type owl:InverseFunctionalProperty ;
+           rdfs:domain :Municipality ;
+           rdfs:range :Producer ;
+           rdfs:comment "A Municipality has worker a Producer."@en ;
+           rdfs:label "hasWorker"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#includeMountainSystem
+:includeMountainSystem rdf:type owl:ObjectProperty ;
+                       rdfs:subPropertyOf :hasMountainSystem ;
+                       owl:inverseOf :isLocatedInCountry ;
+                       rdfs:domain :Country ;
+                       rdfs:range :MountainSystem ;
+                       rdfs:comment "A Country has European Mountain System."@en ;
+                       rdfs:label "includeMountainSystem"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#includesProducer
+:includesProducer rdf:type owl:ObjectProperty ;
+                  owl:inverseOf :isIncludedInValueChain ;
+                  rdfs:domain :ValueChain ;
+                  rdfs:range :Producer ;
+                  rdfs:comment "A Value Chain includes Producer."@en ;
+                  rdfs:label "includesProducer"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isDevelopedIn
+:isDevelopedIn rdf:type owl:ObjectProperty ;
+               rdfs:domain :ValueChain ;
+               rdfs:range :Municipality ;
+               owl:propertyChainAxiom ( :regards
+                                        :hasProducer
+                                        :worksIn
+                                      ) ;
+               rdfs:comment "A Value Chain in developed in a Municipality."@en ;
+               rdfs:label "isDevelopedIn"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isIncludedInValueChain
+:isIncludedInValueChain rdf:type owl:ObjectProperty ;
+                        rdfs:domain :Producer ;
+                        rdfs:range :ValueChain ;
+                        rdfs:comment "A Producer is included in a Value Chain."@en ;
+                        rdfs:label "isIncludedInValueChain"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isLocatedIn
+:isLocatedIn rdf:type owl:ObjectProperty ;
+             rdfs:domain :MountainSystem ;
+             rdfs:range [ rdf:type owl:Class ;
+                          owl:unionOf ( :Country
+                                        :ParkOrganization
+                                      )
+                        ] ;
+             rdfs:comment "A  Mountain System is Located in a Country or in a Natural Park."@en ;
+             rdfs:label "isLocatedIn"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isLocatedInCountry
+:isLocatedInCountry rdf:type owl:ObjectProperty ;
+                    rdfs:subPropertyOf :isLocatedIn ;
+                    rdfs:domain :MountainSystem ;
+                    rdfs:range :Country ;
+                    rdfs:comment "An European Mountain System in located in a Country."@en ;
+                    rdfs:label "isLocatedInCountry"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isReferredBy
+:isReferredBy rdf:type owl:ObjectProperty ;
+              owl:inverseOf :refersTo ;
+              rdf:type owl:InverseFunctionalProperty ;
+              rdfs:domain :MountainSystem ;
+              rdfs:range :ValueChain ;
+              rdfs:comment "A European Mountain System is referred by a Value Chain."@en ;
+              rdfs:label "isReferredBy"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isRegardedBy
+:isRegardedBy rdf:type owl:ObjectProperty ;
+              owl:inverseOf :regards ;
+              rdf:type owl:FunctionalProperty ,
+                       owl:InverseFunctionalProperty ;
+              rdfs:domain :Product ;
+              rdfs:range :ValueChain ;
+              rdfs:comment "A Poduct is regarded by a Value Chain."@en ;
+              rdfs:label "isRegardedBy"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isStakeholderOf
+:isStakeholderOf rdf:type owl:ObjectProperty ;
+                 rdfs:domain :Stakeholder ;
+                 rdfs:range :ValueChain ;
+                 rdfs:comment "Stakeholder is stakeholder of a Value Chain."@en ;
+                 rdfs:label "isStakeholderOf"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#produce
+:produce rdf:type owl:ObjectProperty ;
+         rdfs:domain :Producer ;
+         rdfs:range :Product ;
+         rdfs:comment "A Producer produce a Product."@en ;
+         rdfs:label "produce"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#refersTo
+:refersTo rdf:type owl:ObjectProperty ,
+                   owl:FunctionalProperty ;
+          rdfs:domain :ValueChain ;
+          rdfs:range :MountainSystem ;
+          rdfs:comment "A Value Chain refers to a European Mountain System."@en ;
+          rdfs:label "refersTo"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#regards
+:regards rdf:type owl:ObjectProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain :ValueChain ;
+         rdfs:range :Product ;
+         rdfs:comment "A Value Chain regards a Product."@en ;
+         rdfs:label "regards"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#worksIn
+:worksIn rdf:type owl:ObjectProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain :Producer ;
+         rdfs:range :Municipality ;
+         rdfs:comment "A Producer works in a Municipality."@en ;
+         rdfs:label "worksIn"^^xsd:string .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasExpirationDate
+:hasExpirationDate rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   rdfs:domain :Food ;
+                   rdfs:range xsd:dateTime ;
+                   rdfs:comment "A Food has an expiration date (dateTime)."@en ;
+                   rdfs:label "hasExpirationDate"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#hasPDO
+:hasPDO rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain :Food ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "A Food has a PDO number (integer)."@en ;
+        rdfs:label "hasPDO"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#isIdentifiedByID
+:isIdentifiedByID rdf:type owl:DatatypeProperty ,
+                           owl:FunctionalProperty ;
+                  rdfs:domain :ValueChain ;
+                  rdfs:range xsd:string ;
+                  rdfs:comment "A Value Chain is identified by an ID (string)."@en ;
+                  rdfs:label "isIdentifiedByID"^^xsd:string .
+
+
+###  http://xmlns.com/foaf/0.1/name
+<http://xmlns.com/foaf/0.1/name> rdf:type owl:DatatypeProperty ;
+                                 rdfs:domain [ rdf:type owl:Class ;
+                                               owl:unionOf ( :Country
+                                                             :Municipality
+                                                           )
+                                             ] ;
+                                 rdfs:range xsd:string ;
+                                 rdfs:comment "A Municipality or Country has a Name (string)."@en ;
+                                 rdfs:label "hasName"^^xsd:string .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Country
+:Country rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty <http://xmlns.com/foaf/0.1/name> ;
+                           owl:someValuesFrom xsd:string
+                         ] ;
+         rdfs:comment "an area of land that has its own government, army, etc. Source: dictionary.cambridge.org."@en ;
+         rdfs:label "Country"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Food
+:Food rdf:type owl:Class ;
+      rdfs:subClassOf :Product ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasExpirationDate ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onDataRange xsd:dateTime
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasPDO ;
+                        owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                        owl:onDataRange xsd:integer
+                      ] ;
+      rdfs:comment "Something that people and animals eat, or plants absorb, to keep them alive. Source: dictionary.cambridge.org"@en ;
+      rdfs:label "Food"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#MountainSystem
+:MountainSystem rdf:type owl:Class ;
+                rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                  owl:onProperty :isLocatedInCountry ;
+                                  owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                  owl:onClass :Country
+                                ] ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty :belongsTo ;
+                                  owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                  owl:onClass :ParkOrganization
+                                ] ;
+                rdfs:comment "Chain of mountain ranges in Europe."@en ;
+                rdfs:label "MountainSystem"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Municipality
+:Municipality rdf:type owl:Class ;
+              rdfs:subClassOf [ rdf:type owl:Restriction ;
+                                owl:onProperty :hasAgreementWith ;
+                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                owl:onClass :ParkOrganization
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty <http://xmlns.com/foaf/0.1/name> ;
+                                owl:someValuesFrom xsd:string
+                              ] ;
+              rdfs:comment "A city or town with its own local government, or the local government itself. Source: dictionary.cambridge.org"@en ;
+              rdfs:label "Municipality"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#NationalPark
+:NationalPark rdf:type owl:Class ;
+              rdfs:subClassOf :ParkOrganization ;
+              rdfs:comment "A national natural park organization."@en ;
+              rdfs:label "NationalPark"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#ParkOrganization
+:ParkOrganization rdf:type owl:Class ;
+                  rdfs:subClassOf <http://xmlns.com/foaf/0.1/Organization> ;
+                  owl:disjointUnionOf ( :NationalPark
+                                        :RegionalPark
+                                      ) ;
+                  rdfs:comment "A natural park is a designation for a protected natural area by means of long-term land planning, sustainable resource management and limitation of agricultural and real estate developments. Souce: wikipedia.com."@en ;
+                  rdfs:label "NaturalPark"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Producer
+:Producer rdf:type owl:Class ;
+          rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty :worksIn ;
+                            owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                            owl:onClass :Municipality
+                          ] ;
+          owl:disjointWith :Stakeholder ;
+          rdfs:comment "Person that makes things for sale."@en ;
+          rdfs:label "Producer"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Product
+:Product rdf:type owl:Class ;
+         rdfs:subClassOf [ rdf:type owl:Restriction ;
+                           owl:onProperty :hasProducer ;
+                           owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                           owl:onClass :Producer
+                         ] ;
+         owl:disjointUnionOf ( :Food
+                               :Service
+                             ) ;
+         rdfs:comment "Something that is made to be sold, usually something that is produced by an industrial process or, less commonly, something that is grown or obtained through farming. Source: dictionary.cambridge.org."@en ;
+         rdfs:label "Product"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#RegionalPark
+:RegionalPark rdf:type owl:Class ;
+              rdfs:subClassOf :ParkOrganization ;
+              rdfs:comment "A regional national park organization."@en ;
+              rdfs:label "RegionalPark"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Service
+:Service rdf:type owl:Class ;
+         rdfs:subClassOf :Product ;
+         rdfs:comment "Something intangible to sell."@en ;
+         rdfs:label "Service"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#Stakeholder
+:Stakeholder rdf:type owl:Class ;
+             rdfs:subClassOf <http://xmlns.com/foaf/0.1/Person> ;
+             rdfs:comment "A person such as an employee, customer, or citizen who is involved with an organization, society, etc. and therefore has responsibilities towards it and an interest in its success. Source: dictionary.cambridge.org."@en ;
+             rdfs:label "Stakeholder"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#ValueChain
+:ValueChain rdf:type owl:Class ;
+            rdfs:subClassOf [ rdf:type owl:Restriction ;
+                              owl:onProperty :hasStakeholder ;
+                              owl:minQualifiedCardinality "2"^^xsd:nonNegativeInteger ;
+                              owl:onClass :Stakeholder
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :includesProducer ;
+                              owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                              owl:onClass :Producer
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :isDevelopedIn ;
+                              owl:minQualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                              owl:onClass :Municipality
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :refersTo ;
+                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                              owl:onClass :MountainSystem
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :regards ;
+                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                              owl:onClass :Product
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty :isIdentifiedByID ;
+                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                              owl:onDataRange xsd:string
+                            ] ;
+            rdfs:comment "The series of stages involved in producing a product or service that is sold to consumers, with each stage adding to the value to the product or service. Source: dictionary.cambridge.org."@en ;
+            rdfs:label "ValueChain"^^xsd:string .
+
+
+###  http://xmlns.com/foaf/0.1/Organization
+<http://xmlns.com/foaf/0.1/Organization> rdf:type owl:Class ;
+                                         owl:disjointWith <http://xmlns.com/foaf/0.1/Person> ;
+                                         rdfs:comment "The Organization class represents a kind of Agent corresponding to social instititutions such as companies, societies etc. Source: xmlns.com/foaf/spec/"@en ;
+                                         rdfs:label "Organization"^^xsd:string .
+
+
+###  http://xmlns.com/foaf/0.1/Person
+<http://xmlns.com/foaf/0.1/Person> rdf:type owl:Class ;
+                                   rdfs:comment "The Person class represents people. Something is a Person if it is a person. Source: xmlns.com/foaf/spec/"@en ;
+                                   rdfs:label "Person"^^xsd:string .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#country1
+:country1 rdf:type owl:NamedIndividual ,
+                   :Country ;
+          <http://xmlns.com/foaf/0.1/name> "Italy"^^xsd:string ;
+          rdfs:label "country1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#country2
+:country2 rdf:type owl:NamedIndividual ,
+                   :Country ;
+          :includeMountainSystem :mountainSystem3 ;
+          <http://xmlns.com/foaf/0.1/name> "Germany"^^xsd:string ;
+          rdfs:label "country2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#country3
+:country3 rdf:type owl:NamedIndividual ,
+                   :Country ;
+          <http://xmlns.com/foaf/0.1/name> "France"^^xsd:string ;
+          rdfs:label "country3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#food1
+:food1 rdf:type owl:NamedIndividual ,
+                :Food ;
+       :hasProducer :producer1 ,
+                    :producer2 ;
+       :hasExpirationDate "2027-01-02T00:00:00"^^xsd:dateTime ;
+       :hasPDO 100 ;
+       rdfs:label "food1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#food2
+:food2 rdf:type owl:NamedIndividual ,
+                :Food ;
+       :hasProducer :producer3 ;
+       :hasExpirationDate "2027-05-02T00:00:00"^^xsd:dateTime ;
+       :hasPDO 156 ;
+       rdfs:label "food2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#food3
+:food3 rdf:type owl:NamedIndividual ,
+                :Food ;
+       :hasProducer :producer5 ;
+       :isRegardedBy :valueChain3 ;
+       :hasExpirationDate "2029-01-02T00:00:00"^^xsd:dateTime ;
+       :hasPDO 167 ;
+       rdfs:label "food3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#food4
+:food4 rdf:type owl:NamedIndividual ,
+                :Food ;
+       :hasProducer :producer3 ,
+                    :producer4 ;
+       :isRegardedBy :valueChain4 ;
+       :hasExpirationDate "2025-03-02T00:00:00"^^xsd:dateTime ;
+       :hasPDO 196 ;
+       rdfs:label "food4"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#food5
+:food5 rdf:type owl:NamedIndividual ,
+                :Food ;
+       :hasProducer :producer4 ;
+       :hasExpirationDate "2024-01-02T00:00:00"^^xsd:dateTime ;
+       :hasPDO 178 ;
+       rdfs:label "food5"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#mountainSystem1
+:mountainSystem1 rdf:type owl:NamedIndividual ,
+                          :MountainSystem ;
+                 :belongsTo :nationalPark1 ;
+                 :isLocatedInCountry :country1 ,
+                                     :country2 ;
+                 :isReferredBy :valueChain1 ;
+                 rdfs:label "mountainSystem1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#mountainSystem2
+:mountainSystem2 rdf:type owl:NamedIndividual ,
+                          :MountainSystem ;
+                 :isLocatedInCountry :country3 ;
+                 rdfs:label "mountainSystem2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#mountainSystem3
+:mountainSystem3 rdf:type owl:NamedIndividual ,
+                          :MountainSystem ;
+                 :belongsTo :regionalPark2 ;
+                 rdfs:label "mountainSystem3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#municipality1
+:municipality1 rdf:type owl:NamedIndividual ,
+                        :Municipality ;
+               :develops :valueChain1 ;
+               :hasAgreementWith :nationalPark1 ;
+               <http://xmlns.com/foaf/0.1/name> "Pisa"^^xsd:string ;
+               rdfs:label "municipality1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#municipality2
+:municipality2 rdf:type owl:NamedIndividual ,
+                        :Municipality ;
+               :hasAgreementWith :regionalPark1 ;
+               :hasWorker :producer5 ;
+               <http://xmlns.com/foaf/0.1/name> "Lucca"^^xsd:string ;
+               rdfs:label "municipality2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#municipality3
+:municipality3 rdf:type owl:NamedIndividual ,
+                        :Municipality ;
+               <http://xmlns.com/foaf/0.1/name> "Empoli"^^xsd:string ;
+               rdfs:label "municipality3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#municipality4
+:municipality4 rdf:type owl:NamedIndividual ,
+                        :Municipality ;
+               :hasAgreementWith :nationalPark2 ;
+               <http://xmlns.com/foaf/0.1/name> "Firenze"^^xsd:string ;
+               rdfs:label "municipality4"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#nationalPark1
+:nationalPark1 rdf:type owl:NamedIndividual ,
+                        :NationalPark ;
+               rdfs:label "nationalPark1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#nationalPark2
+:nationalPark2 rdf:type owl:NamedIndividual ,
+                        :NationalPark ;
+               rdfs:label "nationalPark2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#producer1
+:producer1 rdf:type owl:NamedIndividual ,
+                    :Producer ;
+           :worksIn :municipality1 ;
+           rdfs:label "producer1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#producer2
+:producer2 rdf:type owl:NamedIndividual ,
+                    :Producer ;
+           :worksIn :municipality2 ;
+           rdfs:label "producer2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#producer3
+:producer3 rdf:type owl:NamedIndividual ,
+                    :Producer ;
+           :isIncludedInValueChain :valueChain2 ;
+           :produce :service1 ;
+           :worksIn :municipality3 ;
+           rdfs:label "producer3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#producer4
+:producer4 rdf:type owl:NamedIndividual ,
+                    :Producer ;
+           :worksIn :municipality1 ;
+           rdfs:label "producer4"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#producer5
+:producer5 rdf:type owl:NamedIndividual ,
+                    :Producer ;
+           rdfs:label "producer5"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#regionalPark1
+:regionalPark1 rdf:type owl:NamedIndividual ,
+                        :RegionalPark ;
+               :containsMountainSystem :mountainSystem2 ;
+               rdfs:label "regionalPark1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#regionalPark2
+:regionalPark2 rdf:type owl:NamedIndividual ,
+                        :RegionalPark ;
+               :hasAgreementWith :municipality3 ;
+               rdfs:label "regionalPark2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#service1
+:service1 rdf:type owl:NamedIndividual ,
+                   :Service ;
+          rdfs:label "service1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#service2
+:service2 rdf:type owl:NamedIndividual ,
+                   :Service ;
+          :hasProducer :producer4 ;
+          rdfs:label "service2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder1
+:stakeholder1 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              rdfs:label "stakeholder1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder2
+:stakeholder2 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              rdfs:label "stakeholder2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder3
+:stakeholder3 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              rdfs:label "stakeholder3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder4
+:stakeholder4 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              :isStakeholderOf :valueChain2 ;
+              rdfs:label "stakeholder4"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder5
+:stakeholder5 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              :isStakeholderOf :valueChain2 ;
+              rdfs:label "stakeholder5"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#stakeholder6
+:stakeholder6 rdf:type owl:NamedIndividual ,
+                       :Stakeholder ;
+              rdfs:label "stakeholder6"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#valueChain1
+:valueChain1 rdf:type owl:NamedIndividual ,
+                      :ValueChain ;
+             :hasStakeholder :stakeholder1 ,
+                             :stakeholder2 ,
+                             :stakeholder3 ;
+             :includesProducer :producer1 ,
+                               :producer2 ;
+             :regards :food1 ;
+             :isIdentifiedByID "pw4n89"^^xsd:string ;
+             rdfs:label "valueChain1"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#valueChain2
+:valueChain2 rdf:type owl:NamedIndividual ,
+                      :ValueChain ;
+             :isDevelopedIn :municipality2 ;
+             :refersTo :mountainSystem2 ;
+             :regards :service1 ;
+             :isIdentifiedByID "njwebsf"^^xsd:string ;
+             rdfs:label "valueChain2"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#valueChain3
+:valueChain3 rdf:type owl:NamedIndividual ,
+                      :ValueChain ;
+             :hasStakeholder :stakeholder5 ,
+                             :stakeholder6 ;
+             :includesProducer :producer4 ,
+                               :producer5 ;
+             :isDevelopedIn :municipality3 ;
+             :refersTo :mountainSystem3 ;
+             :isIdentifiedByID "y6b6x43"^^xsd:string ;
+             rdfs:label "valueChain3"^^xsd:string .
+
+
+###  http://www.semanticweb.org/saramaenza/ontologies/2022-2023/exam_sw#valueChain4
+:valueChain4 rdf:type owl:NamedIndividual ,
+                      :ValueChain ;
+             :hasStakeholder :stakeholder3 ,
+                             :stakeholder5 ;
+             :includesProducer :producer5 ;
+             :isDevelopedIn :municipality3 ;
+             :refersTo :mountainSystem2 ;
+             :isIdentifiedByID "jbkju7"^^xsd:string .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Country
+                :MountainSystem
+                :Municipality
+                :Product
+                :ValueChain
+                <http://xmlns.com/foaf/0.1/Organization>
+                <http://xmlns.com/foaf/0.1/Person>
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.9.2019-02-01T07:24:44Z) https://github.com/owlcs/owlapi
